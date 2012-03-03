@@ -8,12 +8,13 @@ HERE=$(PWD)
 
 package: $(PACKAGE)
 
-$(PACKAGE): $(PACKAGE).lua RiftAddon.toc $(foreach embed,$(EMBEDS),../$(embed)/*.lua ../$(embed)/*.toc) Makefile
+$(PACKAGE): $(PACKAGE).lua RiftAddon.toc $(foreach embed,$(EMBEDS),../$(embed)/*.lua ../$(embed)/*.toc) Makefile $(EXTRAFILES)
 	rm -rf $(PACKAGE)
 	mkdir $(PACKAGE)
 	rm -f $(PACKAGE)-$(VERSION).zip
 	sed -e "s/VERSION/$(VERSION)-$(DATESTAMP)/" < RiftAddon.toc > $(PACKAGE)/RiftAddon.toc
 	sed -e "s/VERSION/$(VERSION)-$(DATESTAMP)/" < $(PACKAGE).lua > $(PACKAGE)/$(PACKAGE).lua
+	if [ -n "$(EXTRAFILES)" ]; then cp $(EXTRAFILES) $(PACKAGE); fi
 	$(foreach embed,$(EMBEDS),DESTDIR="$(CURDIR)/$(PACKAGE)" make --no-print-directory -C ../$(embed) embed; )
 	cp *.txt $(PACKAGE)/.
 	cp ../bsd.txt $(PACKAGE)/COPYRIGHT.txt
