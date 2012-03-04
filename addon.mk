@@ -27,9 +27,11 @@ release: package
 	zip -r $(PACKAGE)-$(VERSION).zip $(PACKAGE)
 
 install: package
+	[ -n "$(PACKAGE)" ] && rm -rf "$(RIFT)"/"$(PACKAGE)"
 	mkdir -p "$(RIFT)"/$(PACKAGE)
 	cp -r $(PACKAGE)/* "$(RIFT)"/$(PACKAGE)
 
 pts: package
+	[ -n "$(PACKAGE)" ] && rm -rf "$(PTS)"/"$(PACKAGE)"
 	mkdir -p "$(PTS)"/$(PACKAGE)
 	cp -r $(PACKAGE)/* "$(PTS)"/$(PACKAGE)
